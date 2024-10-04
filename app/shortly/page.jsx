@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react/cjs/react.production.min";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Shortly() {
   const [data, setData] = useState(null);
@@ -24,7 +24,7 @@ export default function Shortly() {
     const apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4ZG1hZG9weWxxendkZHZ4bmN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc5NjY1NjEsImV4cCI6MjA0MzU0MjU2MX0.VWXtziyfAVzJTz-M8iqND-_hgE69Nmzb6e8ZpGx36DE"
     const apiUrl = "https://yxdmadopylqzwddvxncx.supabase.co/rest/v1/urls?select=*"
 
-    const res = await fetch(url, {
+    const res = await fetch(apiUrl, {
       method: "GET",
       headers: {
         apiKey: apiKey,
@@ -45,7 +45,36 @@ export default function Shortly() {
     fetchedData();
   }, []);
 
-  
+  const dataSend = async (long, short) => {
+    const apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4ZG1hZG9weWxxendkZHZ4bmN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc5NjY1NjEsImV4cCI6MjA0MzU0MjU2MX0.VWXtziyfAVzJTz-M8iqND-_hgE69Nmzb6e8ZpGx36DE"
+    const apiUrl = "https://yxdmadopylqzwddvxncx.supabase.co/rest/v1/urls?select=*"
+
+    const payload = {
+      long_url: long,
+      short_url: short,
+    };
+
+    const res = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apiKey: apiKey,
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if(response?.ok) {
+      await fetchedData();
+    }
+
+    return alert(
+      JSON.stringify(response?.ok)
+      ? `${payload.long_url} başarıyla ${payload.short_url} olarak kısaltıldı ve database e kaydedildi.`
+      : `Kısaltma işlemi başarısız oldu. ${response?.status} - ${response?.statusText}`
+    )
+  };
+
   return (
     <>
       <div className="formContainer">
