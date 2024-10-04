@@ -20,6 +20,10 @@ export default function Shortly() {
     }
   }
 
+  const goToLink = () => {
+    router.push(`/${data?.long_url}`);
+  };
+
   const fetchedData = async() => {
     const apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4ZG1hZG9weWxxendkZHZ4bmN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc5NjY1NjEsImV4cCI6MjA0MzU0MjU2MX0.VWXtziyfAVzJTz-M8iqND-_hgE69Nmzb6e8ZpGx36DE"
     const apiUrl = "https://yxdmadopylqzwddvxncx.supabase.co/rest/v1/urls?select=*"
@@ -83,14 +87,15 @@ export default function Shortly() {
             type="text"
             placeholder="Shorten a link here..."
             value={longUrl}
+            onChange={(e) => setLongUrl(e.target.value)}
           />
           <button onClick={() => findShortUrl()}>Shorten It!</button>
         </div>
         <div className="shortUrl">
-          <p>Buraya short_url gelecek</p>
+          <p>{data?.short_url}</p>
           <div className="buttons">
             <button onClick={copyToClipboard}>Copied</button>
-            <button>Go To Url</button>
+            <button onClick={() => goToLink()}>Go To Url</button>
           </div>
         </div>
       </div>
