@@ -10,7 +10,7 @@ export default function Shortly() {
   const router = useRouter(null);
 
   const findShortUrl = () => {
-    insertData(longUrl, makeid(7));
+    dataSend(longUrl, makeid(7));
   }
 
   const copyToClipboard = () => {
@@ -49,6 +49,19 @@ export default function Shortly() {
     fetchedData();
   }, []);
 
+  function makeid(length) {
+    let result = "";
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
+  }
+
   const dataSend = async (long, short) => {
     const apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4ZG1hZG9weWxxendkZHZ4bmN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc5NjY1NjEsImV4cCI6MjA0MzU0MjU2MX0.VWXtziyfAVzJTz-M8iqND-_hgE69Nmzb6e8ZpGx36DE"
     const apiUrl = "https://yxdmadopylqzwddvxncx.supabase.co/rest/v1/urls?select=*"
@@ -68,14 +81,14 @@ export default function Shortly() {
       body: JSON.stringify(payload),
     });
 
-    if(response?.ok) {
+    if(res?.ok) {
       await fetchedData();
     }
 
     return alert(
-      JSON.stringify(response?.ok)
+      JSON.stringify(res?.ok)
       ? `${payload.long_url} başarıyla ${payload.short_url} olarak kısaltıldı ve database e kaydedildi.`
-      : `Kısaltma işlemi başarısız oldu. ${response?.status} - ${response?.statusText}`
+      : `Kısaltma işlemi başarısız oldu. ${res?.status} - ${res?.statusText}`
     )
   };
 
